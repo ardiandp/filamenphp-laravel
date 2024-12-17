@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\UserResource\Pages;
-use App\Filament\Resources\UserResource\RelationManagers;
-use App\Models\User;
+use App\Filament\Resources\KategoriResource\Pages;
+use App\Filament\Resources\KategoriResource\RelationManagers;
+use App\Models\Kategori;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,9 +13,9 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class UserResource extends Resource
+class KategoriResource extends Resource
 {
-    protected static ?string $model = User::class;
+    protected static ?string $model = Kategori::class;
     protected static ?string $navigationGroup = 'Master'; // Grup navigasi
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -23,17 +23,9 @@ class UserResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
-                ->required()
-                ->maxLength(255),
-            Forms\Components\TextInput::make('email')
-                ->email()
-                ->required()
-                ->unique(User::class, 'email', ignoreRecord: true),
-            Forms\Components\TextInput::make('password')
-                ->password()
-                ->required()
-                ->minLength(8),
+                Forms\Components\TextInput::make('nama')
+                    ->required()
+                    ->maxLength(255),
             ]);
     }
 
@@ -41,8 +33,12 @@ class UserResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')->sortable()->searchable(),
-                Tables\Columns\TextColumn::make('email')->sortable()->searchable(),
+                Tables\Columns\TextColumn::make('id')->sortable(),
+                Tables\Columns\TextColumn::make('nama')->sortable()->searchable(),
+                Tables\Columns\TextColumn::make('artikel_count')
+                ->label('Jumlah Artikel')
+                ->counts('artikel') // Menghitung jumlah artikel
+                ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')->dateTime(),
             ])
             ->filters([
@@ -68,9 +64,9 @@ class UserResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListUsers::route('/'),
-            'create' => Pages\CreateUser::route('/create'),
-            'edit' => Pages\EditUser::route('/{record}/edit'),
+            'index' => Pages\ListKategoris::route('/'),
+            'create' => Pages\CreateKategori::route('/create'),
+            'edit' => Pages\EditKategori::route('/{record}/edit'),
         ];
     }
 }

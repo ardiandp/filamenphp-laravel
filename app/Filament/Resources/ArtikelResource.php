@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\UserResource\Pages;
-use App\Filament\Resources\UserResource\RelationManagers;
-use App\Models\User;
+use App\Filament\Resources\ArtikelResource\Pages;
+use App\Filament\Resources\ArtikelResource\RelationManagers;
+use App\Models\Artikel;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,9 +13,9 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class UserResource extends Resource
+class ArtikelResource extends Resource
 {
-    protected static ?string $model = User::class;
+    protected static ?string $model = Artikel::class;
     protected static ?string $navigationGroup = 'Master'; // Grup navigasi
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -23,17 +23,15 @@ class UserResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
-                ->required()
-                ->maxLength(255),
-            Forms\Components\TextInput::make('email')
-                ->email()
-                ->required()
-                ->unique(User::class, 'email', ignoreRecord: true),
-            Forms\Components\TextInput::make('password')
-                ->password()
-                ->required()
-                ->minLength(8),
+                Forms\Components\TextInput::make('judul')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\Textarea::make('konten')
+                    ->required(),
+                Forms\Components\Select::make('kategori_id')
+                    ->label('Kategori')
+                    ->relationship('kategori', 'nama')
+                    ->required(),
             ]);
     }
 
@@ -41,8 +39,9 @@ class UserResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')->sortable()->searchable(),
-                Tables\Columns\TextColumn::make('email')->sortable()->searchable(),
+                Tables\Columns\TextColumn::make('id')->sortable(),
+                Tables\Columns\TextColumn::make('judul')->sortable()->searchable(),
+                Tables\Columns\TextColumn::make('kategori.nama')->label('Kategori')->sortable()->searchable(),
                 Tables\Columns\TextColumn::make('created_at')->dateTime(),
             ])
             ->filters([
@@ -68,9 +67,9 @@ class UserResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListUsers::route('/'),
-            'create' => Pages\CreateUser::route('/create'),
-            'edit' => Pages\EditUser::route('/{record}/edit'),
+            'index' => Pages\ListArtikels::route('/'),
+            'create' => Pages\CreateArtikel::route('/create'),
+            'edit' => Pages\EditArtikel::route('/{record}/edit'),
         ];
     }
 }
