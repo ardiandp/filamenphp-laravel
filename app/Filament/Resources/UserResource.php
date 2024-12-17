@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource\RelationManagers;
 use App\Models\User;
+use App\Models\Role;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -34,6 +35,10 @@ class UserResource extends Resource
                 ->password()
                 ->required()
                 ->minLength(8),
+                Forms\Components\Select::make('role_id')
+                ->label('Role')
+                ->relationship('role', 'name') // Relasi ke Role
+                ->required(),
             ]);
     }
 
@@ -43,6 +48,7 @@ class UserResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')->sortable()->searchable(),
                 Tables\Columns\TextColumn::make('email')->sortable()->searchable(),
+                Tables\Columns\TextColumn::make('role.name')->label('Role')->sortable()->searchable(),
                 Tables\Columns\TextColumn::make('created_at')->dateTime(),
             ])
             ->filters([
