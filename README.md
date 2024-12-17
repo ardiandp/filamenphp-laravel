@@ -21,3 +21,7 @@ Jalankan Perintah untuk Membuat Resource:
 - php artisan make:filament-resource User
 
 
+![screenshoot 1](https://raw.githubusercontent.com/ardiandp/filamenphp-laravel/refs/heads/role/public/screenshoot/1.png)
+![screenshoot 2](https://raw.githubusercontent.com/ardiandp/filamenphp-laravel/refs/heads/role/public/screenshoot/2.png)
+![screenshoot 3](https://raw.githubusercontent.com/ardiandp/filamenphp-laravel/refs/heads/role/public/screenshoot/3.png)
+![screenshoot 4](https://raw.githubusercontent.com/ardiandp/filamenphp-laravel/refs/heads/role/public/screenshoot/4.png)
